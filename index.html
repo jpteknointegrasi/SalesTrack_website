@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SalesTrack by Nusa Tekno</title>
+<meta name="description" content="SalesTrack — CRM, penawaran, invoice, verifikasi pembayaran, dan komisi dalam satu alur yang jelas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: brand-led light SaaS page — navy structure, orange for action, soft sky-blue grounds; follows the SalesTrack reference mockup */
+:root{
+  --navy:#0E2A4F; --navy-2:#163B6B; --orange:#F26A1B; --orange-2:#FF8A3D;
+  --blue:#2F6FE4; --sky:#EEF4FC; --sky-2:#E3ECF8;
+  --ink:#0E2A4F; --muted:#5B6B82; --line:#DCE5F1; --card:#FFFFFF; --bg:#F7FAFE;
+  --ok:#1E9E5A; --ok-bg:#E3F6EB; --warn:#C77700; --warn-bg:#FFF2DD;
+  --font:"Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --r:14px; --r-sm:10px;
+  --shadow:0 10px 30px -12px rgba(14,42,79,.18);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding-inline:20px;border-radius:8px;font:600 14px/1 var(--font);cursor:pointer;border:1.5px solid transparent;transition:transform .15s, box-shadow .15s, background .15s}
+.btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid rgba(47,111,228,.45);outline-offset:2px}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:0 8px 18px -8px rgba(242,106,27,.7)}
+.btn-primary:hover{background:#E05C10;transform:translateY(-1px)}
+.btn-ghost{background:#fff;color:var(--navy);border-color:var(--navy)}
+.btn-ghost:hover{background:var(--sky)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.sec{padding-block:72px}
+.sec-head{text-align:center;max-width:640px;margin:0 auto 40px;display:grid;gap:8px}
+.sec-head h2{font-size:clamp(26px,3.2vw,34px);font-weight:800}
+.sec-head p{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo svg{width:36px;height:36px}
+.logo b{display:block;font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.logo b span{color:var(--orange)}
+.logo small{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:2px}
+.nav-links{display:flex;gap:26px;font-weight:500;font-size:14px;color:var(--muted)}
+.nav-links a:hover{color:var(--navy)}
+.nav-cta{margin-left:auto;display:flex;gap:10px}
+.nav-cta .btn{height:40px;padding-inline:18px}
+.menu-btn{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;width:42px;height:42px;cursor:pointer;color:var(--navy)}
+@media (max-width:880px){
+  .nav-links,.nav-cta{display:none}
+  .menu-btn{display:inline-grid;place-items:center}
+  .nav.open .nav-links{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;background:#fff;border-bottom:1px solid var(--line);padding:8px 20px 16px}
+  .nav.open .nav-links a{padding:12px 0;border-bottom:1px solid var(--line);color:var(--navy)}
+  .nav.open .nav-links .m-cta{display:flex;gap:10px;margin-top:14px;border:0}
+}
+.nav-links .m-cta{display:none}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:radial-gradient(900px 500px at 85% 20%,#DDEBFB 0%,transparent 60%),linear-gradient(180deg,#FFFFFF 0%,var(--bg) 100%)}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.25fr;gap:32px;align-items:center;padding-block:56px 40px}
+.hero-copy{display:grid;gap:18px;min-width:0}
+.hero h1{font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.05}
+.hero h1 em{font-style:normal;color:var(--orange);display:block}
+.hero-copy>p{font-size:17px;color:var(--muted);max-width:30em}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.hero-visual{position:relative;min-width:0}
+.hero-visual img{width:100%;height:auto;display:block;filter:drop-shadow(0 30px 40px rgba(14,42,79,.12))}
+.hero-visual .tag{position:absolute;right:6%;bottom:2%;font-size:11px;color:var(--muted)}
+@media (max-width:880px){.hero .wrap{grid-template-columns:1fr;padding-block:36px 24px}}
+
+/* TRUST STRIP */
+.strip{background:#fff;border-block:1px solid var(--line)}
+.strip .wrap{display:grid;grid-template-columns:repeat(3,1fr);padding-block:22px}
+.strip-item{display:flex;gap:14px;align-items:center;padding-inline:20px}
+.strip-item+.strip-item{border-left:1px solid var(--line)}
+.ico{width:44px;height:44px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;background:var(--sky);color:var(--blue)}
+.ico svg{width:22px;height:22px}
+.ico.o{background:#FFEFE4;color:var(--orange)}
+.strip-item b{display:block;font-size:15px}
+.strip-item span{font-size:13px;color:var(--muted)}
+@media (max-width:760px){.strip .wrap{grid-template-columns:1fr;gap:14px}.strip-item{padding-inline:0}.strip-item+.strip-item{border-left:0}}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.feat-h{display:flex;align-items:center;gap:10px;font-weight:700}
+.feat-h .ico{width:36px;height:36px;border-radius:10px}
+.feat-h .ico svg{width:18px;height:18px}
+.mini{background:var(--sky);border-radius:var(--r-sm);padding:12px;height:168px;overflow:hidden;font-size:11px;position:relative}
+.feat p{font-size:13.5px;color:var(--muted)}
+@media (max-width:1000px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.feat-grid{grid-template-columns:1fr}}
+/* mini: kanban */
+.kb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;height:100%}
+.kb-col{display:flex;flex-direction:column;gap:5px}
+.kb-col i{font-style:normal;font-weight:700;font-size:10px;padding:3px 6px;border-radius:5px;background:#fff}
+.kb-col:nth-child(1) i{color:var(--blue)}.kb-col:nth-child(2) i{color:var(--orange)}.kb-col:nth-child(3) i{color:#7A4FD0}
+.kb-card{background:#fff;border-radius:6px;padding:6px;display:flex;gap:5px;align-items:center;box-shadow:0 1px 2px rgba(14,42,79,.06)}
+.av{width:16px;height:16px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#9DB8E0,#5B7FB8)}
+.av.o{background:linear-gradient(135deg,#FFC59E,#F26A1B)}
+.bar{height:4px;border-radius:4px;background:var(--sky-2);flex:1}
+/* mini: docs */
+.docs{position:relative;height:100%}
+.doc{position:absolute;background:#fff;border-radius:8px;padding:10px;width:62%;box-shadow:0 4px 12px -4px rgba(14,42,79,.18)}
+.doc b{font-size:10px;display:block;margin-bottom:6px}
+.doc .ln{height:4px;background:var(--sky-2);border-radius:3px;margin-top:5px}
+.doc.a{left:4%;top:12%;transform:rotate(-4deg)}
+.doc.b{right:4%;top:2%;transform:rotate(3deg)}
+.doc .stamp{margin-top:10px;width:30px;height:30px;border-radius:8px;background:var(--orange);display:grid;place-items:center;color:#fff}
+/* mini: pay */
+.pay{background:#fff;border-radius:10px;padding:12px;margin:14px 8px;box-shadow:0 6px 16px -6px rgba(14,42,79,.2);display:grid;gap:4px}
+.pay small{color:var(--muted)}
+.pay strong{font-size:16px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:10.5px;padding:3px 9px;border-radius:999px;width:max-content}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.blue{background:var(--sky);color:var(--blue)}
+.pill.o{background:#FFEFE4;color:var(--orange)}
+.check{position:absolute;right:16px;top:20px;width:30px;height:30px;border-radius:50%;background:var(--ok);display:grid;place-items:center;color:#fff}
+/* mini: commission list */
+.com{display:grid;gap:7px;background:#fff;border-radius:10px;padding:10px;height:100%}
+.com-row{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center}
+.com-row .av{width:22px;height:22px}
+.com-row b{font-size:11px;display:block;line-height:1.2}
+.com-row small{color:var(--muted);font-size:10px}
+.com-row .r{text-align:right;display:grid;gap:3px;justify-items:end}
+.com-row .r strong{font-size:11px}
+
+/* FLOW */
+.flow-sec{background:linear-gradient(180deg,var(--sky) 0%,#F3F7FD 100%)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative;list-style:none;margin:0;padding:0}
+.flow li{display:grid;justify-items:center;text-align:center;gap:10px;position:relative}
+.flow li:not(:last-child)::after{content:"";position:absolute;top:38px;left:calc(50% + 50px);right:calc(-50% + 50px);border-top:2px dashed #B9CBE6}
+.flow .disc{width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--blue);box-shadow:var(--shadow)}
+.flow .disc svg{width:32px;height:32px}
+.flow b{font-size:15.5px}
+.flow span{font-size:13.5px;color:var(--muted);max-width:18em}
+.note{margin:30px auto 0;display:flex;gap:10px;align-items:center;width:max-content;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:13px;color:var(--muted)}
+.note svg{flex-shrink:0;color:var(--blue)}
+@media (max-width:760px){.flow{grid-template-columns:1fr 1fr;row-gap:28px}.flow li::after{display:none}}
+
+/* ROLES */
+.roles{display:grid;grid-template-columns:.85fr 1.4fr;gap:28px;align-items:start}
+.role-panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px 22px 24px;min-width:0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto}
+.tab{background:none;border:0;padding:14px 14px 12px;font:600 14px var(--font);color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.role-title{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.role-title h3{font-size:20px;font-weight:800}
+.role-panel>p,#roleDesc{color:var(--muted);font-size:14.5px}
+.role-list{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:12px}
+.role-list li{display:flex;gap:10px;align-items:center;font-size:14px}
+.role-list li svg{flex-shrink:0;color:var(--blue)}
+/* app mock */
+.app{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);display:grid;grid-template-columns:150px 1fr;overflow:hidden;min-width:0;font-size:12px}
+.app-side{background:var(--navy);color:#C9D6EA;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+.app-side .logo{margin:0 6px 14px}
+.app-side .logo svg{width:24px;height:24px}
+.app-side .logo b{font-size:14px;color:#fff}
+.app-side .logo small{color:#8FA4C4;font-size:8px}
+.app-side a{display:flex;gap:8px;align-items:center;padding:7px 8px;border-radius:7px;font-size:11.5px}
+.app-side a svg{width:14px;height:14px;flex-shrink:0}
+.app-side a.on{background:rgba(242,106,27,.16);color:#fff;box-shadow:inset 3px 0 0 var(--orange)}
+.app-main{padding:14px 16px;display:grid;gap:12px;min-width:0;background:#FBFCFF}
+.app-top{display:flex;align-items:center;gap:10px}
+.app-top h4{margin:0;font-size:15px;font-weight:800}
+.search{margin-left:auto;flex:0 1 200px;height:28px;border-radius:7px;background:var(--sky);display:flex;align-items:center;padding-inline:8px;color:var(--muted);font-size:10.5px;gap:6px;min-width:0;overflow:hidden;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px;display:grid;gap:2px;min-width:0}
+.kpi small{color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi strong{font-size:16px;font-weight:800}
+.kpi em{font-style:normal;font-size:10px;color:var(--ok);font-weight:700}
+.app-body{display:grid;grid-template-columns:1.2fr 1fr;gap:10px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px;min-width:0}
+.panel h5{margin:0 0 8px;font-size:11.5px}
+.chart{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:end;height:120px;padding:0 6px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(0deg,transparent 0 29px,#EEF2F8 29px 30px)}
+.chart div{border-radius:5px 5px 0 0;background:var(--blue);transition:height .4s}
+.chart div:nth-child(2){background:#5D8FEA}.chart div:nth-child(3){background:#A0BDF2}.chart div:nth-child(4){background:var(--orange)}
+.chart-x{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:5px 6px 0;text-align:center;font-size:9.5px;color:var(--muted)}
+.chart-x b{display:block;color:var(--ink);font-size:11px}
+.acts{display:grid;gap:8px}
+.act{display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:center}
+.act .ico{width:22px;height:22px;border-radius:6px}
+.act .ico svg{width:12px;height:12px}
+.act b{display:block;font-size:11px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act small{color:var(--muted);font-size:10px}
+.act time{font-size:9.5px;color:var(--muted);white-space:nowrap}
+.mock-note{font-size:11px;color:var(--muted);text-align:right;margin-top:8px}
+@media (max-width:1000px){.roles{grid-template-columns:1fr}}
+@media (max-width:620px){.app{grid-template-columns:1fr}.app-side{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.app-body{grid-template-columns:1fr}}
+
+/* PRICING */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+.plan{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:16px;position:relative}
+.plan.rec{border:1.5px solid var(--orange);background:linear-gradient(180deg,#FFF6F0 0%,#fff 60%);box-shadow:0 18px 40px -20px rgba(242,106,27,.45)}
+.plan .badge{position:absolute;top:16px;right:16px;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.plan-h{display:flex;gap:14px;align-items:flex-start}
+.plan-h .ico{width:52px;height:52px;border-radius:14px}
+.plan-h .ico svg{width:26px;height:26px}
+.plan h3{font-size:19px;font-weight:800}
+.plan-h p{font-size:13.5px;color:var(--muted);margin-top:2px}
+.plan ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:13.5px}
+.plan li{display:flex;gap:8px;align-items:flex-start}
+.plan li svg{flex-shrink:0;margin-top:3px;color:var(--ok)}
+.plan .btn{margin-top:auto;width:100%}
+.fine{text-align:center;font-size:12.5px;color:var(--muted);margin-top:18px}
+@media (max-width:900px){.plans{grid-template-columns:1fr;max-width:520px;margin-inline:auto}}
+
+/* PARTNER */
+.partner{background:radial-gradient(700px 400px at 80% 50%,#1F4C8A 0%,transparent 70%),var(--navy);color:#fff;border-radius:20px;display:grid;grid-template-columns:1fr 1.15fr;align-items:center;overflow:hidden;position:relative}
+.partner-copy{padding:44px 0 44px 44px;display:grid;gap:16px;position:relative;z-index:1}
+.partner h2{font-size:clamp(26px,3.2vw,34px);font-weight:800}
+.partner-copy>p{color:#C9D6EA;max-width:28em}
+.partner-copy small{color:#8FA4C4;font-size:12.5px}
+.partner-copy .btn{width:max-content}
+.p-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:4px}
+.p-stats div{display:grid}
+.p-stats b{font-size:20px;color:var(--orange-2)}
+.p-stats span{font-size:12px;color:#8FA4C4}
+.partner img{width:100%;height:100%;object-fit:cover;object-position:left center;display:block;min-height:300px}
+@media (max-width:860px){.partner{grid-template-columns:1fr}.partner-copy{padding:32px 24px 8px}.partner img{min-height:0;height:auto}}
+
+/* ORDER */
+.order{display:grid;grid-template-columns:.8fr 1.5fr;gap:32px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px}
+.order-copy{display:grid;gap:12px}
+.order-copy h2{font-size:clamp(24px,2.8vw,30px);font-weight:800}
+.order-copy p{color:var(--muted)}
+.ref-chip{display:none;align-items:center;gap:8px;background:#FFEFE4;color:#B4480A;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;width:max-content;max-width:100%}
+.ref-chip.on{display:inline-flex}
+form.go{display:grid;gap:20px}
+.go-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:s}
+.go-steps li{counter-increment:s;align-content:start;background:var(--sky);border-radius:12px;padding:14px 14px 14px 52px;position:relative;display:grid;gap:4px;font-size:13.5px}
+.go-steps li::before{content:counter(s);position:absolute;left:14px;top:14px;width:26px;height:26px;border-radius:50%;background:#fff;color:var(--blue);font-weight:800;display:grid;place-items:center;font-size:13px}
+.go-steps span{color:var(--muted)}
+.go-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end}
+@media (max-width:760px){.go-steps{grid-template-columns:1fr}.go-row{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-size:12.5px;font-weight:600}
+.field label span{color:var(--muted);font-weight:500}
+.field input,.field select{height:44px;border:1px solid var(--line);border-radius:8px;padding-inline:12px;font:14px var(--font);color:var(--ink);background:#FBFCFF;width:100%}
+.field input::placeholder{color:#9AA8BC}
+.field input:focus,.field select:focus{border-color:var(--blue);background:#fff;outline:none;box-shadow:0 0 0 3px rgba(47,111,228,.15)}
+.field .err{font-size:11.5px;color:#C0392B;min-height:0}
+.field.bad input,.field.bad select{border-color:#E06C5C}
+form .btn{width:100%}
+.done{display:none;grid-column:1/-1;background:var(--ok-bg);border:1px solid #BFE6CE;border-radius:12px;padding:16px;gap:6px;color:#14532D;font-size:14px}
+.done.on{display:grid}
+.done b{font-size:15px}
+@media (max-width:900px){.order{grid-template-columns:1fr;padding:24px}}
+
+
+/* FAQ */
+.faq-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.faq-head h2{font-size:clamp(22px,2.6vw,28px);font-weight:800}
+.faq{display:grid;gap:10px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:32px 1fr 20px;gap:12px;align-items:center;padding:14px 18px;font-weight:700;font-size:14.5px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ico{width:32px;height:32px;border-radius:9px}
+.faq summary .ico svg{width:16px;height:16px}
+.faq summary .chev{transition:transform .2s;color:var(--muted)}
+.faq details[open] .chev{transform:rotate(180deg)}
+.faq details p{padding:0 18px 16px 62px;color:var(--muted);font-size:14px;max-width:70em}
+
+/* FOOTER */
+footer{background:var(--navy);color:#C9D6EA;margin-top:72px}
+footer .wrap{display:flex;align-items:center;gap:36px;padding-block:28px;flex-wrap:wrap}
+footer .logo b{color:#fff}
+footer .logo small{color:#8FA4C4}
+footer nav{display:flex;gap:26px;flex-wrap:wrap;font-size:14px}
+footer nav a:hover{color:#fff}
+footer .copy{margin-left:auto;font-size:12px;color:#8FA4C4;text-align:right}
+@media (max-width:760px){footer .copy{margin-left:0;text-align:left}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 48 48">
+      <path d="M24 6a18 18 0 1 0 18 18" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+      <path d="M24 15a9 9 0 1 0 9 9" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="24" cy="24" r="3.6" fill="#F26A1B"/>
+      <path d="M24 24 L40 8" stroke="#F26A1B" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M31 6.5 L42 6 L41.5 17 Z" fill="#F26A1B"/>
+    </symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.5c2.7.1 4.4 1.8 5 4.5"/></g></symbol>
+    <symbol id="i-user-plus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M3 20.5c.7-4 3.6-6 7-6 1.5 0 2.9.4 4 1.1"/><path d="M18.5 14v6M15.5 17h6"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.3 2.3 4.2-4.6"/></g></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="2.8"/><path d="M5 6v4c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8V6M5 10v4c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-4M5 14v4c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-4"/></g></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6M9 9h2"/></g></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18M7 15h4"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20h16M7 16v-4M12 16V8M17 16v-6"/></g></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 3 8-8"/><path d="M15 7h5v5"/><path d="M3 21h18"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.2 3 3 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tick" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 11v6M12 7.5v.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></g></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5h4"/></g></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></g></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></g></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 21V5l8-2v18M12 21V9l8 2.5V21M2.5 21h19"/><path d="M7 8h2M7 12h2M7 16h2M15 13.5h2M15 17h2" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15 9 12c1.5-4.5 5-8.2 11-9-.8 6-4.5 9.5-9 11z"/><path d="M9 12H5l2.5-3.5H11M12 15v4l3.5-2.5V13"/><path d="M5.5 16.5C4 17.5 3.5 20.5 3.5 20.5s3-.5 4-2"/></g></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 7.5h15a1.5 1.5 0 0 1 1.5 1.5v9.5A1.5 1.5 0 0 1 19 20H5a1.5 1.5 0 0 1-1.5-1.5v-12A2 2 0 0 1 5.5 4.5H17v3"/><path d="M16 14h1.5"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="SalesTrack beranda">
+      <svg style="color:var(--navy)"><use href="#logo"/></svg>
+      <span><b>Sales<span>Track</span></b><small>by Nusa Tekno</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigasi utama">
+      <a href="#fitur">Fitur</a>
+      <a href="#cara-kerja">Cara Kerja</a>
+      <a href="#paket">Paket</a>
+      <a href="#partner">Partner</a>
+      <div class="m-cta"><a class="btn btn-ghost" href="https://salestrack-virid.vercel.app/">Masuk</a><a class="btn btn-primary" href="#order">Jadwalkan Demo</a></div>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="https://salestrack-virid.vercel.app/">Masuk</a>
+      <a class="btn btn-primary" href="#order">Jadwalkan Demo</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">CRM, Penjualan &amp; Komisi</span>
+        <h1>Dari prospek hingga komisi. <em>Semua terkendali.</em></h1>
+        <p>Kelola klien, penawaran, invoice, pembayaran, dan komisi dalam satu alur yang jelas.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#order">Jadwalkan Demo <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="#fitur">Lihat Fitur</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/hero-dashboard.webp" width="1672" height="941" alt="Tampilan dashboard SalesTrack dengan kolom Peluang, Penawaran, Invoice, Komisi dan kartu invoice terverifikasi">
+        <span class="tag">Data ilustrasi</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="Keunggulan">
+    <div class="wrap">
+      <div class="strip-item"><span class="ico"><svg><use href="#i-users"/></svg></span><div><b>CRM Terpadu</b><span>Semua data klien dan aktivitas dalam satu tempat.</span></div></div>
+      <div class="strip-item"><span class="ico"><svg><use href="#i-shield"/></svg></span><div><b>Pembayaran Terverifikasi</b><span>Hanya pembayaran yang valid untuk komisi.</span></div></div>
+      <div class="strip-item"><span class="ico"><svg><use href="#i-coins"/></svg></span><div><b>Komisi Transparan</b><span>Perhitungan dan status komisi dapat dilihat dengan jelas.</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="fitur">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Satu platform. Seluruh alur penjualan.</h2>
+        <p>Semua yang tim Anda butuhkan, dari prospek hingga komisi.</p>
+      </div>
+      <div class="feat-grid">
+        <article class="feat">
+          <div class="feat-h"><span class="ico"><svg><use href="#i-user-plus"/></svg></span>CRM &amp; Peluang</div>
+          <div class="mini" aria-hidden="true">
+            <div class="kb">
+              <div class="kb-col"><i>Baru</i><div class="kb-card"><span class="av"></span><span class="bar"></span></div><div class="kb-card"><span class="av o"></span><span class="bar"></span></div><div class="kb-card"><span class="av"></span><span class="bar"></span></div></div>
+              <div class="kb-col"><i>Demo</i><div class="kb-card"><span class="av o"></span><span class="bar"></span></div><div class="kb-card"><span class="av"></span><span class="bar"></span></div></div>
+              <div class="kb-col"><i>Penawaran</i><div class="kb-card"><span class="av"></span><span class="bar"></span></div><div class="kb-card"><span class="av o"></span><span class="bar"></span></div><div class="kb-card"><span class="av"></span><span class="bar"></span></div></div>
+            </div>
+          </div>
+          <p>Kelola data klien beserta banyak PIC, catat aktivitas, dan pantau pipeline penjualan dengan mudah.</p>
+        </article>
+        <article class="feat">
+          <div class="feat-h"><span class="ico o"><svg><use href="#i-doc"/></svg></span>Penawaran &amp; Invoice</div>
+          <div class="mini" aria-hidden="true">
+            <div class="docs">
+              <div class="doc a"><b>Penawaran</b><div class="ln"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:85%"></div><div class="ln" style="width:55%"></div></div>
+              <div class="doc b"><b>Invoice</b><small class="num" style="color:var(--muted);font-size:9px">INV-2026-00021</small><div class="ln"></div><div class="ln" style="width:60%"></div><div class="stamp"><svg width="16" height="16"><use href="#i-doc"/></svg></div></div>
+            </div>
+          </div>
+          <p>Buat penawaran dari katalog standar, ubah jadi invoice DP dan pelunasan, tanpa invoice ganda.</p>
+        </article>
+        <article class="feat">
+          <div class="feat-h"><span class="ico"><svg><use href="#i-card"/></svg></span>Verifikasi Pembayaran</div>
+          <div class="mini" aria-hidden="true">
+            <div class="pay"><small>Pembayaran</small><strong class="num">Rp 15.000.000</strong><small class="num">10 Okt 2026</small><span class="pill ok"><svg width="11" height="11"><use href="#i-check"/></svg>Terverifikasi</span></div>
+            <span class="check"><svg width="16" height="16"><use href="#i-tick"/></svg></span>
+          </div>
+          <p>Finance memverifikasi dana masuk. Bukti transfer saja belum dihitung sebagai pembayaran.</p>
+        </article>
+        <article class="feat">
+          <div class="feat-h"><span class="ico o"><svg><use href="#i-trend"/></svg></span>Komisi &amp; Payout</div>
+          <div class="mini" aria-hidden="true">
+            <div class="com">
+              <div class="com-row"><span class="av"></span><div><b>Rina Sari</b><small>Marketing</small></div><div class="r"><strong class="num">Rp 1.350.000</strong><span class="pill ok">Siap cair</span></div></div>
+              <div class="com-row"><span class="av o"></span><div><b>Andi Wijaya</b><small>Partner</small></div><div class="r"><strong class="num">Rp 2.100.000</strong><span class="pill warn">Diproses</span></div></div>
+              <div class="com-row"><span class="av"></span><div><b>Dewi Lestari</b><small>Marketing</small></div><div class="r"><strong class="num">Rp 980.000</strong><span class="pill blue">Telah dibayar</span></div></div>
+            </div>
+          </div>
+          <p>Komisi dihitung otomatis dari pembayaran sah, lalu dicairkan sesuai jadwal perusahaan.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec flow-sec" id="cara-kerja">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Alur jelas, tim lebih terarah.</h2>
+        <p>Dari prospek pertama hingga komisi diterima, semua dalam satu alur.</p>
+      </div>
+      <ol class="flow">
+        <li><span class="disc"><svg><use href="#i-user-plus"/></svg></span><b>1. Catat Prospek</b><span>Simpan data klien dan catat kebutuhannya.</span></li>
+        <li><span class="disc"><svg><use href="#i-doc"/></svg></span><b>2. Kirim Penawaran</b><span>Buat penawaran dan kirim ke klien lewat email atau PDF.</span></li>
+        <li><span class="disc"><svg><use href="#i-card"/></svg></span><b>3. Verifikasi Pembayaran</b><span>Konfirmasi pembayaran yang benar-benar diterima.</span></li>
+        <li><span class="disc"><svg><use href="#i-chart"/></svg></span><b>4. Pantau Komisi</b><span>Lihat status komisi dan riwayat payout.</span></li>
+      </ol>
+      <p class="note"><svg width="16" height="16"><use href="#i-info"/></svg>Komisi partner sah setelah dana diterima. Komisi marketing sah setelah handover diterima.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="peran">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Tampilan tepat untuk setiap peran.</h2>
+        <p>Setiap tim mendapatkan informasi yang relevan, dengan alur kerja yang sesuai.</p>
+      </div>
+      <div class="roles">
+        <div class="role-panel">
+          <div class="tabs" role="tablist" aria-label="Peran pengguna">
+            <button class="tab" role="tab" id="tab-owner" aria-selected="true" data-role="owner">Owner</button>
+            <button class="tab" role="tab" id="tab-marketing" aria-selected="false" data-role="marketing">Marketing</button>
+            <button class="tab" role="tab" id="tab-finance" aria-selected="false" data-role="finance">Finance</button>
+            <button class="tab" role="tab" id="tab-partner" aria-selected="false" data-role="partner">Partner</button>
+          </div>
+          <div role="tabpanel" aria-live="polite">
+            <div class="role-title"><span class="ico"><svg><use href="#i-users"/></svg></span><h3 id="roleTitle">Untuk Owner</h3></div>
+            <p id="roleDesc">Pantau performa penjualan, status pembayaran, dan komisi dalam satu dashboard.</p>
+            <ul class="role-list" id="roleList"></ul>
+          </div>
+        </div>
+        <div>
+          <div class="app" aria-label="Contoh tampilan aplikasi">
+            <aside class="app-side">
+              <div class="logo"><svg style="color:#fff"><use href="#logo"/></svg><span><b>Sales<span>Track</span></b><small>by Nusa Tekno</small></span></div>
+              <a class="on"><svg><use href="#i-home"/></svg>Dashboard</a>
+              <a><svg><use href="#i-users"/></svg>Klien</a>
+              <a><svg><use href="#i-search"/></svg>Peluang</a>
+              <a><svg><use href="#i-calendar"/></svg>Follow-up</a>
+              <a><svg><use href="#i-doc"/></svg>Penawaran</a>
+              <a><svg><use href="#i-card"/></svg>Invoice</a>
+              <a><svg><use href="#i-coins"/></svg>Komisi</a>
+              <a><svg><use href="#i-chart"/></svg>Laporan</a>
+              <a><svg><use href="#i-gear"/></svg>Pengaturan</a>
+            </aside>
+            <div class="app-main">
+              <div class="app-top"><h4 id="appTitle">Dashboard</h4><span class="search"><svg width="12" height="12"><use href="#i-search"/></svg>Cari klien, peluang, atau invoice…</span><svg width="16" height="16" style="color:var(--muted)"><use href="#i-bell"/></svg></div>
+              <div class="kpis num" id="kpis"></div>
+              <div class="app-body">
+                <div class="panel"><h5 id="chartTitle">Pipeline Penjualan</h5><div class="chart" id="chart"><div></div><div></div><div></div><div></div></div><div class="chart-x num" id="chartX"></div></div>
+                <div class="panel"><h5 id="actTitle">Aktivitas Terbaru</h5><div class="acts" id="acts"></div></div>
+              </div>
+            </div>
+          </div>
+          <p class="mock-note">Data ilustrasi</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="paket" style="padding-top:24px">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Pilih paket sesuai kebutuhan tim.</h2>
+        <p>Fitur dan konfigurasi disesuaikan dengan proses bisnis Anda.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <div class="plan-h"><span class="ico"><svg><use href="#i-rocket"/></svg></span><div><h3>Starter</h3><p>Untuk tim kecil yang mulai mengelola penjualan.</p></div></div>
+          <ul>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>CRM, peluang, dan follow-up</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Penawaran &amp; invoice dengan template standar</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Komisi flat dan payout manual</li>
+          </ul>
+          <a class="btn btn-ghost" href="#order" data-plan="Starter">Hubungi tim</a>
+        </article>
+        <article class="plan rec">
+          <span class="badge">Direkomendasikan</span>
+          <div class="plan-h"><span class="ico o"><svg><use href="#i-users"/></svg></span><div><h3>Business</h3><p>Untuk tim yang aktif mengelola banyak klien dan transaksi.</p></div></div>
+          <ul>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Semua fitur Starter</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Branding dokumen dan template berversi</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Portal konsumen &amp; program partner affiliate</li>
+          </ul>
+          <a class="btn btn-primary" href="#order" data-plan="Business">Hubungi tim</a>
+        </article>
+        <article class="plan">
+          <div class="plan-h"><span class="ico"><svg><use href="#i-building"/></svg></span><div><h3>Enterprise</h3><p>Untuk organisasi dengan kebutuhan kustom.</p></div></div>
+          <ul>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Semua fitur Business</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Regional, approval berjenjang, multi-lokasi</li>
+            <li><svg width="14" height="14"><use href="#i-tick"/></svg>Integrasi payment gateway &amp; payout otomatis</li>
+          </ul>
+          <a class="btn btn-ghost" href="#order" data-plan="Enterprise">Hubungi tim</a>
+        </article>
+      </div>
+      <p class="fine">Nama paket merupakan usulan desain. Harga dan batas penggunaan ditetapkan saat setup.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="partner" style="padding-top:24px">
+    <div class="wrap">
+      <div class="partner">
+        <div class="partner-copy">
+          <h2>Tumbuh bersama SalesTrack.</h2>
+          <p>Bagikan link referral atau kupon. Pantau order dan komisi lewat portal partner.</p>
+          <div class="p-stats">
+            <div><b>Sekali bayar</b><span>komisi per penjualan baru</span></div>
+            <div><b>Real-time</b><span>status pending → sah → dibayar</span></div>
+          </div>
+          <a class="btn btn-primary" href="#order" data-plan="partner">Daftar Partner <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
+          <small>Aktivasi oleh Owner. Komisi sah setelah pembayaran diterima; payout mengikuti jadwal.</small>
+        </div>
+        <img src="assets/partner.webp" width="1132" height="726" alt="Ilustrasi portal partner SalesTrack dengan link referral, kupon diskon, dan dompet komisi" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="order" style="padding-top:24px">
+    <div class="wrap">
+      <div class="order">
+        <div class="order-copy">
+          <h2>Mulai perjalanan penjualan yang lebih rapi.</h2>
+          <p>Formulir order online terhubung langsung ke SalesTrack. Punya kode dari partner? Masukkan di bawah agar diskonnya berlaku.</p>
+          <span class="ref-chip" id="refChip"><svg width="15" height="15"><use href="#i-link"/></svg><span id="refText">Kode referral tercatat</span></span>
+        </div>
+        <form id="orderForm" class="go" novalidate>
+          <ol class="go-steps">
+            <li><b>Pilih paket</b><span>Jumlah pengguna dan durasi langganan, lengkap dengan estimasi biaya.</span></li>
+            <li><b>Isi data perusahaan &amp; PIC</b><span>PIC utama dan tembusan, misalnya manajer dan direktur.</span></li>
+            <li><b>Tim kami menghubungi Anda</b><span>Penawaran resmi dikirim setelah order dicek. Belum ada pembayaran di tahap ini.</span></li>
+          </ol>
+          <div class="go-row">
+            <div class="field"><label for="f-coupon">Kode partner / kupon <span>(opsional)</span></label><input id="f-coupon" name="coupon" placeholder="Contoh: BUDITEKNO" autocomplete="off" style="text-transform:uppercase"><span class="err"></span></div>
+            <div class="field"><button class="btn btn-primary" type="submit">Isi Formulir Order <svg width="16" height="16"><use href="#i-arrow"/></svg></button><span class="err"></span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="faqH">
+    <div class="faq-head"><h2 id="faqH">Pertanyaan yang sering diajukan.</h2></div>
+    <div class="faq">
+      <details><summary><span class="ico"><svg><use href="#i-card"/></svg></span>Apakah pembayaran otomatis?<svg class="chev" width="18" height="18"><use href="#i-chev"/></svg></summary><p>Belum. Pada versi awal, klien mengunggah bukti transfer melalui portal invoice, lalu Finance memverifikasi dana yang benar-benar masuk. Status pembayaran baru dianggap sah setelah verifikasi. Integrasi payment gateway disiapkan untuk tahap berikutnya.</p></details>
+      <details><summary><span class="ico o"><svg><use href="#i-coins"/></svg></span>Kapan komisi dinyatakan sah?<svg class="chev" width="18" height="18"><use href="#i-chev"/></svg></summary><p>Komisi partner sah saat dana diterima. Komisi marketing sah setelah serah terima (handover) implementasi diterima klien. Komisi yang sah dicairkan pada tanggal payout yang ditetapkan perusahaan.</p></details>
+      <details><summary><span class="ico"><svg><use href="#i-link"/></svg></span>Bagaimana referral dan kupon bekerja?<svg class="chev" width="18" height="18"><use href="#i-chev"/></svg></summary><p>Partner membagikan link referral atau kode kupon. Order yang masuk lewat link atau kupon yang valid tercatat atas nama satu partner dan tampil di portal partner. Jika link dan kupon berbeda, kupon yang dimasukkan saat order yang berlaku. Perpanjangan langganan tidak memberi komisi partner.</p></details>
+      <details><summary><span class="ico o"><svg><use href="#i-doc"/></svg></span>Bisakah satu klien punya beberapa PIC?<svg class="chev" width="18" height="18"><use href="#i-chev"/></svg></summary><p>Bisa. Satu organisasi klien dapat memiliki banyak PIC, misalnya manajer dan direktur. Penawaran dikirim ke PIC utama dengan PIC lain sebagai cc.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#top"><svg style="color:#fff"><use href="#logo"/></svg><span><b>Sales<span>Track</span></b><small>by Nusa Tekno</small></span></a>
+    <nav aria-label="Footer"><a href="#fitur">Produk</a><a href="#partner">Partner</a><a href="#order">Kontak</a><a href="#privasi">Kebijakan Privasi</a><a href="#syarat">Syarat Layanan</a></nav>
+    <p class="copy">Data pada tampilan merupakan ilustrasi<br>© 2026 Nusa Tekno. Semua hak dilindungi.</p>
+  </div>
+</footer>
+
+<script>
+// Alamat aplikasi dan alamat formulir order umum (samakan dengan Pengaturan Kemitraan di aplikasi)
+var APP_URL='https://salestrack-virid.vercel.app/', ORDER_SLUG='nusatekno';
+(function(){
+  try{var qs=new URLSearchParams(location.search);if(qs.get('order')!==null||qs.get('ref')){location.replace(APP_URL+location.search);return}}catch(e){}
+  // Fix FAQ chevron missing on 2nd item
+  document.querySelectorAll('.faq summary').forEach(function(s){
+    if(!s.querySelector('.chev')){s.insertAdjacentHTML('beforeend','<svg class="chev" width="18" height="18"><use href="#i-chev"/></svg>');}
+  });
+
+  // Mobile menu
+  var nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
+  mb.addEventListener('click',function(){var o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+  nav.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');mb.setAttribute('aria-expanded','false')})});
+
+  // Role tabs — illustrative data
+  var I=function(id){return '<svg><use href="#'+id+'"/></svg>'};
+  var roles={
+    owner:{t:'Untuk Owner',d:'Pantau performa penjualan, status pembayaran, dan komisi dalam satu dashboard.',
+      l:['Lihat ringkasan penjualan dan pipeline','Pantau pembayaran terverifikasi','Kontrol kebijakan komisi dan aktivitas tim'],
+      app:'Dashboard',k:[['Total Klien','128','↑ 12%'],['Penawaran Aktif','18','↑ 6%'],['Invoice Terbit','24','↑ 20%'],['Komisi Bulan Ini','Rp 6,75 jt','↑ 24%']],
+      ct:'Pipeline Penjualan',c:[['Baru',12],['Demo',8],['Penawaran',5],['Negosiasi',4]],
+      at:'Aktivitas Terbaru',a:[['i-user-plus','','Yayasan ABC','Membuat penawaran','10 Okt'],['i-doc','o','Klinik Sehat','Invoice terbit','9 Okt'],['i-check','','PT Maju Bersama','Pembayaran terverifikasi','8 Okt']]},
+    marketing:{t:'Untuk Marketing',d:'Kelola database dan agenda sendiri, dari follow-up hingga komisi yang sudah sah.',
+      l:['Agenda follow-up dan reminder harian','Buat penawaran dari katalog resmi','Lihat komisi milik sendiri beserta statusnya'],
+      app:'Dashboard Marketing',k:[['Klien Aktif','48','↑ 8%'],['Follow-up Hari Ini','6','3 meeting'],['Penawaran Terkirim','11','↑ 4%'],['Komisi Siap Cair','Rp 1,35 jt','↑ 10%']],
+      ct:'Peluang Saya',c:[['Baru',9],['Demo',6],['Penawaran',4],['Negosiasi',2]],
+      at:'Follow-up Hari Ini',a:[['i-calendar','','Yayasan ABC','Demo produk online','09.00'],['i-users','o','Klinik Sehat','Meeting penawaran','11.00'],['i-doc','','Universitas Harapan','Kirim revisi penawaran','14.00']]},
+    finance:{t:'Untuk Finance',d:'Verifikasi dana masuk, cocokkan dengan invoice, dan jalankan payout sesuai jadwal.',
+      l:['Antrian bukti transfer untuk diverifikasi','Satu dana tidak diakui dua kali','Batch payout komisi per periode'],
+      app:'Penerimaan & Komisi',k:[['Menunggu Verifikasi','7','2 baru'],['Terverifikasi Bulan Ini','Rp 182 jt','↑ 15%'],['Invoice Jatuh Tempo','5','minggu ini'],['Payout Tgl 5','Rp 9,2 jt','14 penerima']],
+      ct:'Status Invoice',c:[['Lunas',16],['Sebagian',6],['Terbit',9],['Jatuh tempo',5]],
+      at:'Antrian Verifikasi',a:[['i-card','','RS Permata','Rp 25.000.000 · DP','Baru'],['i-card','o','Apartemen Sentosa','Rp 150.000.000','Cek mutasi'],['i-check','','PT Maju Bersama','Rp 15.000.000','Diterima']]},
+    partner:{t:'Untuk Partner',d:'Pantau klik, order, dan komisi dari link referral atau kupon Anda secara transparan.',
+      l:['Link referral dan kode kupon pribadi','Status komisi: pending → sah → dibayar','Riwayat payout dan materi promosi'],
+      app:'Portal Partner',k:[['Klik Bulan Ini','1.240','↑ 18%'],['Order','9','↑ 3'],['Komisi Sah','Rp 2,1 jt','↑ 30%'],['Payout Berikutnya','5 Nov','terjadwal']],
+      ct:'Konversi Referral',c:[['Klik',1240],['Form',64],['Order',9],['Dibayar',7]],
+      at:'Komisi Terbaru',a:[['i-coins','o','Order #ST-0912','Sah · dana diterima','Rp 750 rb'],['i-coins','','Order #ST-0907','Pending · menunggu bayar','Rp 600 rb'],['i-wallet','','Payout Oktober','Telah dibayar','Rp 1,9 jt']]}
+  };
+  var tabs=document.querySelectorAll('.tab');
+  function render(key){
+    var r=roles[key];
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.role===key)});
+    document.getElementById('roleTitle').textContent=r.t;
+    document.getElementById('roleDesc').textContent=r.d;
+    document.getElementById('roleList').innerHTML=r.l.map(function(x){return '<li><svg width="20" height="20"><use href="#i-check"/></svg>'+x+'</li>'}).join('');
+    document.getElementById('appTitle').textContent=r.app;
+    document.getElementById('kpis').innerHTML=r.k.map(function(k){return '<div class="kpi"><small>'+k[0]+'</small><strong>'+k[1]+'</strong><em>'+k[2]+'</em></div>'}).join('');
+    document.getElementById('chartTitle').textContent=r.ct;
+    var max=Math.max.apply(null,r.c.map(function(c){return c[1]}));
+    var bars=document.querySelectorAll('#chart div');
+    r.c.forEach(function(c,i){bars[i].style.height=Math.max(6,Math.round(c[1]/max*100))+'%'});
+    document.getElementById('chartX').innerHTML=r.c.map(function(c){return '<span>'+c[0]+'<b>'+c[1].toLocaleString('id-ID')+'</b></span>'}).join('');
+    document.getElementById('actTitle').textContent=r.at;
+    document.getElementById('acts').innerHTML=r.a.map(function(a){return '<div class="act"><span class="ico '+a[1]+'">'+I(a[0])+'</span><div style="min-width:0"><b>'+a[2]+'</b><small>'+a[3]+'</small></div><time>'+a[4]+'</time></div>'}).join('');
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){render(t.dataset.role)})});
+  render('owner');
+
+  // Referral capture: ?ref=KODE (or #ref-KODE) stored for the attribution window
+  var ATTR_DAYS=30, ref=null;
+  try{
+    var q=new URLSearchParams(location.search).get('ref');
+    var h=(location.hash.match(/^#ref-([A-Za-z0-9_-]+)$/)||[])[1];
+    var incoming=(q||h||'').toUpperCase();
+    if(incoming){localStorage.setItem('st_ref',JSON.stringify({code:incoming,at:Date.now()}))}
+    var saved=JSON.parse(localStorage.getItem('st_ref')||'null');
+    if(saved && Date.now()-saved.at < ATTR_DAYS*864e5){ref=saved.code}else{localStorage.removeItem('st_ref')}
+  }catch(e){}
+  var chip=document.getElementById('refChip');
+  if(ref){chip.classList.add('on');document.getElementById('refText').textContent='Referral partner: '+ref}
+
+  // Order buttons go to the order form in the app
+  document.querySelectorAll('[data-plan]').forEach(function(b){b.addEventListener('click',function(){
+    setTimeout(function(){document.getElementById('f-coupon').focus({preventScroll:true})},400);
+  })});
+  if(ref){document.getElementById('f-coupon').value=ref}
+
+  var form=document.getElementById('orderForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var code=document.getElementById('f-coupon').value.trim().toUpperCase();
+    var field=document.getElementById('f-coupon').closest('.field');
+    if(code && !/^[A-Z0-9_-]{3,30}$/.test(code)){field.classList.add('bad');field.querySelector('.err').textContent='Kode hanya huruf, angka, - atau _.';return}
+    field.classList.remove('bad');field.querySelector('.err').textContent='';
+    location.href=APP_URL+(code?'?ref='+encodeURIComponent(code):'?order='+encodeURIComponent(ORDER_SLUG));
+  });
+})();
+</script>
+</body>
+</html>
