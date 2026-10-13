@@ -11,7 +11,7 @@ Aplikasi SalesTrack ada di repo terpisah (`jpteknointegrasi/SalesTrack`) dan tet
 
 ## Pengaturan
 Di bagian atas `<script>` dalam `index.html`:
-- `APP_URL` — alamat aplikasi (tombol Masuk dan formulir order). Sekarang `https://salestrack-virid.vercel.app/`.
+- `APP_URL` — alamat aplikasi (tombol Masuk dan formulir order). Sekarang `https://salestrack-virid.vercel.app/app`.
 - `ORDER_SLUG` — alamat formulir order umum; samakan dengan Pengaturan Kemitraan di aplikasi (sekarang `nusatekno`).
 
 Link partner `?ref=KODE` dan `?order=alamat` yang dibuka di website diteruskan otomatis ke formulir order di aplikasi.
