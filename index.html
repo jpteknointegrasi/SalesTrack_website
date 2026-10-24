@@ -221,6 +221,14 @@ p{margin:0}
 .partner-copy>p{color:#C9D6EA;max-width:28em}
 .partner-copy small{color:#8FA4C4;font-size:12.5px}
 .partner-copy .btn{width:max-content}
+.p-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn-line{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+.btn-line:hover{background:rgba(255,255,255,.1);border-color:#fff}
+.p-who{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:34em}
+.p-who div{display:grid;gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px}
+.p-who b{font-size:14px}
+.p-who span{font-size:12.5px;color:#C9D6EA}
+@media (max-width:520px){.p-who{grid-template-columns:1fr}.p-cta .btn{width:100%;justify-content:center}}
 .p-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:4px}
 .p-stats div{display:grid}
 .p-stats b{font-size:20px;color:var(--orange-2)}
@@ -528,13 +536,20 @@ footer .copy{margin-left:auto;font-size:12px;color:#8FA4C4;text-align:right}
       <div class="partner">
         <div class="partner-copy">
           <h2>Tumbuh bersama SalesTrack.</h2>
-          <p>Bagikan link referral atau kupon. Pantau order dan komisi lewat portal partner.</p>
+          <p>Bergabung sebagai Mitra (YouTuber, kreator, website, media) atau tim Marketing Nusa Tekno. Bagikan link atau kupon, pantau order dan komisi dari akun Anda sendiri.</p>
           <div class="p-stats">
             <div><b>Sekali bayar</b><span>komisi per penjualan baru</span></div>
             <div><b>Real-time</b><span>status pending → sah → dibayar</span></div>
           </div>
-          <a class="btn btn-primary" href="#order" data-plan="partner">Daftar Partner <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
-          <small>Aktivasi oleh Owner. Komisi sah setelah pembayaran diterima; payout mengikuti jadwal.</small>
+          <div class="p-cta">
+            <a class="btn btn-primary" href="https://salestrack-virid.vercel.app/app?gabung=nusatekno&amp;peran=mitra" data-join="mitra">Daftar jadi Mitra <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-line" href="https://salestrack-virid.vercel.app/app?gabung=nusatekno&amp;peran=marketing" data-join="marketing">Daftar jadi Marketing <svg width="16" height="16"><use href="#i-arrow"/></svg></a>
+          </div>
+          <div class="p-who">
+            <div><b>Mitra</b><span>Promosi lewat kanal Anda. Komisi per pelanggan baru dari link atau kupon.</span></div>
+            <div><b>Marketing</b><span>Kelola klien, penawaran, dan follow-up. Komisi dari langganan dan setup.</span></div>
+          </div>
+          <small>Isi data diri, rekening, dan kanal/referensi. Akun aktif setelah disetujui Owner. Komisi sah setelah pembayaran diterima; payout mengikuti jadwal.</small>
         </div>
         <img src="assets/partner.webp" width="1132" height="726" alt="Ilustrasi portal partner SalesTrack dengan link referral, kupon diskon, dan dompet komisi" loading="lazy">
       </div>
@@ -654,6 +669,8 @@ var APP_URL='https://salestrack-virid.vercel.app/app', ORDER_SLUG='nusatekno';
   }catch(e){}
   var chip=document.getElementById('refChip');
   if(ref){chip.classList.add('on');document.getElementById('refText').textContent='Referral partner: '+ref}
+
+  document.querySelectorAll('[data-join]').forEach(function(a){a.href=APP_URL+'?gabung='+ORDER_SLUG+'&peran='+a.getAttribute('data-join')});
 
   // Order buttons go to the order form in the app
   document.querySelectorAll('[data-plan]').forEach(function(b){b.addEventListener('click',function(){
